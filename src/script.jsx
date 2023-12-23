@@ -30,8 +30,8 @@ function ResultOverlay(props) {
   console.log(props.predictions)
   let table_rows = Object.entries(props.predictions).map(([name, value], index) => (
     <tr key={index}>
-      <td className={styles.result_overlay_name}>{name}</td>
-      <td className={styles.result_overlay_value} /*style={{'--sparkline-value': value}}*/x>{(value * 100).toFixed(2)}%</td>
+      <td>{name}</td>
+      <td /*style={{'--sparkline-value': value}}*/x>{(value * 100).toFixed(2)}%</td>
     </tr>
   ))
   return (
