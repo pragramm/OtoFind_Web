@@ -1,6 +1,7 @@
 import { createRoot } from 'react-dom/client';
 import React from 'react';
 import * as tf from '@tensorflow/tfjs';
+//equivalent: 
 import * as styles from './style.module.scss';
 import * as placeholder_image_src_url from './assets/placeholder.jpg?w=224&h=224';
 
@@ -107,7 +108,7 @@ class App extends React.Component {
     //tensor = tf.div(tensor, 255.0);
     let predictions = {};
     for (let [name, model] of Object.entries(this.props.models)) {
-      let prediction = model.predict(tensor);
+      let prediction = await model.then((model) => model.predict(tensor));
       //console.log(prediction);
       predictions[name] = 1 - (await prediction.array())[0][0];
     }
@@ -132,11 +133,13 @@ class App extends React.Component {
 }
 
 (async() => {
-  await tf.setBackend('webgl');
+  if (!await tf.setBackend('webgl')) {
+    await tf.setBackend('cpu');
+  }
   let models = {
-    'Acute Otitis Media': await tf.loadGraphModel('./static/models/compiled/OtoCNN_keras_AOM-final-tfjs/model.json'),
-    'Chronic Suppurative Otitis Media': await tf.loadGraphModel('./static/models/compiled/OtoCNN_keras_CSOM-final-tfjs/model.json'),
-    'Excessive Earwax': await tf.loadGraphModel('./static/models/compiled/OtoCNN_keras_Earwax-final-tfjs/model.json'),
+    'Acute Otitis Media': tf.loadGraphModel('./static/models/compiled/OtoCNN_keras_AOM-final-tfjs/model.json'),
+    'Chronic Suppurative Otitis Media': tf.loadGraphModel('./static/models/compiled/OtoCNN_keras_CSOM-final-tfjs/model.json'),
+    'Excessive Earwax': tf.loadGraphModel('./static/models/compiled/OtoCNN_keras_Earwax-final-tfjs/model.json'),
   }
   createRoot(document.getElementById('app_root')).render(<App models={models} />);
 })();
