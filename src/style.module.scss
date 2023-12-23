@@ -16,10 +16,10 @@ $bottom-toolbar-height: 50pt;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    min-height: calc(100vh - #{$bottom-toolbar-height});
+    min-height: calc(100dvh - #{$bottom-toolbar-height});
     img{
-        height: calc(min(100vh - #{$bottom-toolbar-height}, 100vw));
-        width: calc(min(100vh - #{$bottom-toolbar-height}, 100vw));
+        height: calc(min(100dvh - #{$bottom-toolbar-height}, 100vw));
+        width: calc(min(100dvh - #{$bottom-toolbar-height}, 100vw));
     }
     margin-top: auto;
     margin-bottom: auto;
