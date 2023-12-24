@@ -4,6 +4,7 @@ import * as tf from '@tensorflow/tfjs';
 //equivalent: 
 import * as styles from './style.module.scss';
 import * as placeholder_image_src_url from './assets/placeholder.jpg?w=224&h=224';
+import { showImageFilePicker } from './show_open_image_file_picker.js';
 
 class CameraToolbar extends React.Component {
   constructor(props) {
@@ -70,22 +71,7 @@ class App extends React.Component {
   }
 
   async runPredictions() {
-    let image_file = await showOpenFilePicker({
-      types: [
-        {
-          description: 'Image files',
-          accept: {
-            'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
-          },
-        },
-      ],
-      excludeAcceptAllOption: true,
-      multiple: false,
-    });
-    //console.log(image_file)
-    if (!image_file) return;
-    image_file = image_file[0];
-    let image = await image_file.getFile();
+    let image = await showImageFilePicker();
     let image_file_url = URL.createObjectURL(image);
     await this.runPredictionsFromURL(image_file_url);
   }
