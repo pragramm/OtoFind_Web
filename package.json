@@ -17,6 +17,6 @@
   },
   "scripts": {
     "serve": "npx parcel serve src/index.html",
-    "build": "npx parcel build src/index.html --public-url https://omduggineni.github.io/OtoFind_Web/"
+    "build": "npx parcel build src/index.html --public-url https://pragramm.github.io/OtoFind_Web/"
   }
 }
