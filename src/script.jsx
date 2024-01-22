@@ -5,6 +5,27 @@ import * as tf from '@tensorflow/tfjs';
 import * as styles from './style.module.scss';
 import * as placeholder_image_src_url from './assets/placeholder.jpg?w=224&h=224';
 import { showImageFilePicker } from './show_open_image_file_picker.js';
+import { IoInformationCircleOutline } from "react-icons/io5";
+
+class TitleBar extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (
+      <div className={styles.title_toolbar}>
+        <span className={styles.app_title_text}>
+          OtoFind - Ear Disease Diagnosis
+        </span>
+        <span className={styles.app_title_info}>
+          <IoInformationCircleOutline onClick={() => this.props.onInfoClick()} />
+        </span>
+      </div>
+    );
+  }
+}
+
 
 class CameraToolbar extends React.Component {
   constructor(props) {
@@ -60,6 +81,27 @@ class ResultView extends React.Component {
   }
 }
 
+class InfoModal extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (
+      <div className={styles.info_modal} style={{display: this.props.show ? 'flex' : 'none'}}>
+        <div className={styles.info_modal_content}>
+          <span className={styles.info_modal_close} onClick={this.props.onClose}>&larr; Back</span>
+          <h1>About OtoFind</h1>
+          <p>Welcome to OtoFind, your revolutionary health companion! Leveraging advanced machine learning, our app offers accurate and cost-effective diagnoses for conditions like Acute Otitis Media and Chronic Suppurative Otitis Media. Paired with a 3D-printed, smartphone-attachable otoscope, it captures inner ear images effortlessly.</p>
+          <p>Easy for anyone to use, just tap the camera icon, select a photo, and let our model swiftly predict diseases based on otoscope images. The speed is remarkable - all three machine learning models run in under a second!</p>
+          <p>OtoFind goes beyond convenience, providing precise diagnoses, particularly benefiting underserved areas. Whether in remote regions, low-income communities, or countries with limited healthcare access, our app ensures efficient healthcare solutions.</p>
+          <p>Take control of your health – diagnose possible ear infections/diseases with ease. Explore app functionality with sample images and capture your own ear canal using the camera option. Your health, your control, with OtoFind.</p>
+        </div>
+      </div>
+    );
+  }
+}
+
 
 class App extends React.Component {
   constructor(props) {
@@ -67,6 +109,7 @@ class App extends React.Component {
     this.state = {
       predictions: null,
       imageUrl: placeholder_image_src_url,
+      showInfoModal: false,
     };
   }
 
@@ -111,7 +154,9 @@ class App extends React.Component {
   render() {
     return (
       <div className={styles.app_container}>
-        <ResultView predictions={this.state.predictions} imageUrl={this.state.imageUrl} />
+        <TitleBar onInfoClick={() => this.setState({showInfoModal: true})} />
+        <InfoModal show={this.state.showInfoModal} onClose={() => this.setState({showInfoModal: false})} />
+        <ResultView predictions={this.state.showInfoModal ? null : this.state.predictions} imageUrl={this.state.imageUrl} />
         <CameraToolbar onButton1Click={this.runPredictions.bind(this)} onButton2Click={this.runPredictionsFromRandomImage.bind(this)} />
       </div>
     );
